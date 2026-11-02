@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}FindersNotKeepers - Home{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <!-- Listings Section -->
+    <section class="listings-section">
+        <h2>Recent Listings</h2>
+        
+        <!-- Listing Form -->
+        <div class="listing-form">
+            <h3>Report a Lost or Found Item</h3>
+            <form id="listing-form">
+                <div class="form-group">
+                    <label for="item-type">Item Type *</label>
+                    <select class="form-control" id="item-type" required>
+                        <option value="">Select Type</option>
+                        <option value="lost">Lost Item</option>
+                        <option value="found">Found Item</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="item-title">Title *</label>
+                    <input type="text" class="form-control" id="item-title" placeholder="e.g., Black Laptop Bag, iPhone 13, Blue Jacket" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-description">Description *</label>
+                    <textarea class="form-control" id="item-description" rows="3" placeholder="Describe the item in detail including color, brand, unique features, contents..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="item-category">Category *</label>
+                    <select class="form-control" id="item-category" required>
+                        <option value="">Select Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="documents">Documents</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="books">Books</option>
+                        <option value="jewelry">Jewelry</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="item-location">Location *</label>
+                    <input type="text" class="form-control" id="item-location" placeholder="Where was it lost/found? e.g., Main Library, Student Center, Engineering Building" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-date">Date *</label>
+                    <input type="date" class="form-control" id="item-date" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Listing</button>
+                
+                <div class="public-only" style="margin-top: 1rem; padding: 1rem; background: #fff3cd; border-radius: 4px;">
+                    <small>💡 <strong>Note:</strong> You need to be logged in to create listings. <a href="{{ url_for('login_page') }}" style="color: #856404;">Login or Sign Up</a></small>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Listings Grid -->
+        <div class="listing-cards" id="listings-container">
+            <!-- Listings will be dynamically loaded here -->
+            <div class="empty-state">
+                <h3>Loading listings...</h3>
+                <p>Please wait while we load the latest lost and found items.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Notifications Panel -->
+        <div class="notifications-panel">
+            <div class="panel-header">
+                <h3 class="panel-title">Notifications</h3>
+                <span class="badge" id="notification-count">0</span>
+            </div>
+            <div id="notifications-list">
+                <div class="empty-state">No notifications yet</div>
+            </div>
+            
+            <div class="user-only" style="margin-top: 1rem;">
+                <button class="btn btn-outline" style="width: 100%;" onclick="toggleNotificationPanel()">
+                    View All Notifications
+                </button>
+            </div>
+        </div>
+        
+        <!-- AI Panel -->
+        <div class="ai-panel">
+            <div class="panel-header">
+                <h3 class="panel-title">AI Features</h3>
+            </div>
+            <p><strong>Smart Matching System</strong></p>
+            <ul class="ai-features-list">
+                <li>Semantic Item Matching</li>
+                <li>Location-based Suggestions</li>
+                <li>Automated Notifications</li>
+                <li>Similarity Scoring</li>
+                <li>Smart Search</li>
+            </ul>
+            
+            <div class="user-only">
+                <div class="form-group threshold-control">
+                    <label for="similarity-threshold">AI Similarity Threshold</label>
+                    <input type="range" class="form-control" id="similarity-threshold" min="50" max="95" value="70">
+                    <span class="threshold-value" id="threshold-value">70%</span>
+                    <small style="display: block; margin-top: 0.5rem; color: #666;">
+                        Higher values = fewer but more accurate matches
+                    </small>
+                </div>
+            </div>
+            
+            <div class="public-only" style="padding: 1rem; background: #e7f3ff; border-radius: 4px;">
+                <p><strong>🔒 Login to Access AI Features</strong></p>
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">Get personalized matching and notifications by creating an account.</p>
+                <a href="{{ url_for('login_page') }}" class="btn btn-primary" style="width: 100%;">Sign Up Free</a>
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="notifications-panel">
+            <div class="panel-header">
+                <h3 class="panel-title">Platform Stats</h3>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+                <div style="padding: 1rem; background: #eaffea; border-radius: 4px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #28a745;">24</div>
+                    <div style="font-size: 0.8rem;">Items Reunited</div>
+                </div>
+                <div style="padding: 1rem; background: #e7f3ff; border-radius: 4px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #007bff;">156</div>
+                    <div style="font-size: 0.8rem;">Active Listings</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Set current date as default for date field
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateField = document.getElementById('item-date');
+        if (dateField) {
+            const today = new Date().toISOString().split('T')[0];
+            dateField.value = today;
+        }
+    });
+</script>
+{% endblock %}

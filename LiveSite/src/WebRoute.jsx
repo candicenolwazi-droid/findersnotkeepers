@@ -1,0 +1,53 @@
+import { Routes, Route } from 'react-router-dom'
+import Landing from './Pages/LandingPage.jsx'
+import About from './Pages/About.jsx'
+import Login from './Pages/Login.jsx'
+import Signup from './Pages/Signup.jsx'
+import Listings from './Pages/Listings.jsx'
+import ListingDetail from './Pages/ListingDetail.jsx'
+import Settings from './Pages/Settings.jsx'
+import Profile from './Pages/Profile.jsx'
+import CreateListing from './Pages/CreateListing.jsx'
+import Notifications from './Pages/Notifications.jsx'
+import Messages from './Pages/Messages.jsx'
+import ContactFromListing from './Pages/ContactFromListing.jsx'
+import MyArchive from './Pages/MyArchive.jsx'
+import Admin from './Pages/Admin.jsx'
+
+
+export default function Web() {
+  return (
+    <Routes>
+      {/*Route to follow if a specific string is added to the url*/}
+      <Route path="/" element={<Landing />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
+      <Route path="/listings" element={<Listings />} />
+      <Route path="/listings/:id" element={<ListingDetail />} />
+
+
+
+      <Route path="/settings" element={<Settings />} />
+
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/mylistings" element={<MyArchive />} />
+
+      <Route path="/create" element={<CreateListing />} />
+
+      <Route path="/notifications" element={<Notifications />} />
+      <Route path="/messages" element={<Messages />} />
+      <Route path="/messages/:id" element={<Messages />} />
+
+
+      <Route path="/contact/:listingId" element={<ContactFromListing />} />
+
+      {/* Admin Dashboard - Only accessible to admin users */}
+      <Route path="/admin" element={<Admin />} />
+
+      {/*You can later replace it with a styled 404 page component.*/}
+      <Route path="*" element={<h2 style={{padding:16}}>Page not found</h2>} />
+    </Routes>
+  )
+}

@@ -1,0 +1,33 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Databases, sessions and uploads
+*.db
+*.sqlite
+*.sqlite3
+instance/
+flask_session/
+uploads/
+static/avatars/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Editor / OS
+.idea/
+Thumbs.db
+desktop.ini
+*.log
